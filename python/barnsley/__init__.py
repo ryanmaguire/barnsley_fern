@@ -18,11 +18,12 @@
 #   along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.    #
 ################################################################################
 #   Purpose:                                                                   #
-#       Creates a Barnsley fern.                                               #
+#       Code for generating Barnsley ferns.                                    #
 ################################################################################
 #   Author:     Ryan Maguire                                                   #
 #   Date:       October 11, 2023.                                              #
 ################################################################################
 """
-import barnsley
-barnsley.run(barnsley.color.grayscale, "barnsley_fern.ppm")
+
+from . import color
+from .run import run
