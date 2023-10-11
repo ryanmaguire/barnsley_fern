@@ -16,19 +16,32 @@
  *  You should have received a copy of the GNU General Public License         *
  *  along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.   *
  ******************************************************************************
- *  Creates a Barnley fern.                                                   *
+ *  Purpose:                                                                  *
+ *      Provides a macro for safely inlining without assuming the user has    *
+ *      C99 features. Works with C89 compilers as well.                       *
  ******************************************************************************
  *  Author: Ryan Maguire                                                      *
- *  Date:   2022/01/16                                                        *
+ *  Date:   2023/10/11                                                        *
  ******************************************************************************/
 
-/*  All required tools are provided here.                                     */
-#include "bf/bf.h"
+/*  Include guard to prevent including this file twice.                       */
+#ifndef BF_INLINE_H
+#define BF_INLINE_H
 
-/*  Function for drawing the Barnsley Fern.                                   */
-int main(void)
-{
-    bf_run(bf_colorer_grayscale, "barnsley_fern.ppm");
-    return 0;
-}
-/*  End of main.                                                              */
+/*  Check the __STDC_VERSION__ macro for inline support.                      */
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+
+/*  C99 and higher have inline as a keyword. Nothing to add here.             */
+#define BF_INLINE static inline
+
+#else
+/*  Else for #if __STDC_VERSION__ >= 199901L.                                 */
+
+/*  Otherwise we can somewhat mimic inlining with "static".                   */
+#define BF_INLINE static
+
+#endif
+/*  End of #if __STDC_VERSION__ >= 199901L.                                   */
+
+#endif
+/*  End of include guard.                                                     */
