@@ -158,8 +158,8 @@ bf_color_scale(const struct bf_color *c, double t)
  *      val (double):                                                         *
  *          The scale factor, between 0 and 1.                                *
  *  Outputs:                                                                  *
- *      grey (struct bf_color):                                               *
- *          A grey color with intensity given by the input.                   *
+ *      gray (struct bf_color):                                               *
+ *          A gray color with intensity given by the input.                   *
  ******************************************************************************/
 BF_INLINE struct bf_color
 bf_colorer_grayscale(double val)
