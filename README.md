@@ -5,7 +5,7 @@
 
 # Barnsley Fern <a name="bf"></a>
 Code for rendering the Barnsley fern in different languages.
-![Barnsley Fern](https://math.dartmouth.edu/~rmaguire/projects/barnsley_fern/barnsley.png "Barnsley Fern")
+![Barnsley Fern](https://math.dartmouth.edu/~rmaguire/projects/barnsley_fern/barnsley_fern.png "Barnsley Fern")
 
 # Benchmarks
 The following used a Ryzen 9 3900x (12-core) on Debian 11.
