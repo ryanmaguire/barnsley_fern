@@ -111,7 +111,7 @@ bf_run(colorer color, const char *name)
     /*  Close the file and return.                                            */
     bf_ppm_close(&PPM);
 }
-/*  End of main.                                                              */
+/*  End of bf_run.                                                            */
 
 #endif
 /*  End of include guard.                                                     */
