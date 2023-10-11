@@ -17,10 +17,10 @@
  *  along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.   *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Provides the default parameters for the black holes.                  *
+ *      Provides the default parameters for the Barnsley ferns.               *
  ******************************************************************************
  *  Author: Ryan Maguire                                                      *
- *  Date:   2023/09/23                                                        *
+ *  Date:   2023/10/11                                                        *
  ******************************************************************************/
 package main
 

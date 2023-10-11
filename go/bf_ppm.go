@@ -20,7 +20,7 @@
  *      Provides a struct for working with PPM files.                         *
  ******************************************************************************
  *  Author: Ryan Maguire                                                      *
- *  Date:   2023/09/23                                                        *
+ *  Date:   2023/10/11                                                        *
  ******************************************************************************/
 package main
 
@@ -48,7 +48,7 @@ type PPM struct {
  *      Creates a PPM file with a given file name.                            *
  *  Arguments:                                                                *
  *      name (const char *):                                                  *
- *          The file name of the output PPM (ex. "black_hole.ppm").           *
+ *          The file name of the output PPM (ex. "barnsley_fern.ppm").        *
  *  Outputs:                                                                  *
  *      None.                                                                 *
  ******************************************************************************/
