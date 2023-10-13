@@ -16,19 +16,45 @@
  *  You should have received a copy of the GNU General Public License         *
  *  along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.   *
  ******************************************************************************
- *  Creates a Barnley fern.                                                   *
+ *  Purpose:                                                                  *
+ *      Provides a data structure for the Barnsley fractal.                   *
  ******************************************************************************
  *  Author: Ryan Maguire                                                      *
- *  Date:   2022/01/16                                                        *
+ *  Date:   2023/10/12                                                        *
  ******************************************************************************/
 
-/*  All required tools are provided here.                                     */
-#include "bf/bf.h"
+/*  Include guard to prevent including this file twice.                       */
+#ifndef BF_DATA_H
+#define BF_DATA_H
 
-/*  Function for drawing the Barnsley Fern.                                   */
-int main(void)
-{
-    bf_run(bf_colorer_grayscale, &bf_default_data, "barnsley_fern.ppm");
-    return 0;
-}
-/*  End of main.                                                              */
+/*  Affine transformations in the plane given here.                           */
+#include "bf_affine2.h"
+
+/*  Data structure for the Barnsley transformation.                           */
+struct bf_data {
+
+    /*  We split the interval [0, 100] into four sub-intervals with these     *
+     *  cutoff-points. These must be in increasing order.                     */
+    double cutoff[3];
+
+    /*  The affine transformations for the four sub-intervals.                */
+    struct bf_affine2 transform[4];
+};
+
+/*  Default parameters for "the" Barnsley fern.                               */
+static const struct bf_data bf_default_data = {
+
+    /*  The cut-off parameters.                                               */
+    {1.0, 86.0, 93.0},
+
+    /*  The four affine transformations for the sub-intervals.                */
+    {
+        {{{{+0.00, +0.00}, {+0.00, +0.16}}}, {0.00, 0.00}},
+        {{{{+0.80, +0.04}, {-0.04, +0.85}}}, {0.00, 1.60}},
+        {{{{+0.20, -0.26}, {+0.23, +0.22}}}, {0.00, 1.60}},
+        {{{{-0.15, +0.28}, {+0.26, +0.24}}}, {0.00, 0.44}}
+    }
+};
+
+#endif
+/*  End of include guard.                                                     */

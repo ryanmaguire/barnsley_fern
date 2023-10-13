@@ -33,6 +33,9 @@
 /*  Basic color struct for working with colors in RGB format.                 */
 #include "bf_color.h"
 
+/*  Data structure with the affine transformations given here.                */
+#include "bf_data.h"
+
 /*  Main function for generating the Barnsley fern provided here.             */
 #include "bf_fern.h"
 
@@ -47,7 +50,7 @@
 
 /*  Function for drawing the Barnsley Fern.                                   */
 BF_INLINE void
-bf_run(colorer color, const char *name)
+bf_run(colorer color, const struct bf_data *fern, const char *name)
 {
     /*  Integers for looping over pixels in the fern.                         */
     unsigned int x, y;
@@ -57,7 +60,7 @@ bf_run(colorer color, const char *name)
 
     /*  Buffer for the Barnsley fern. The values for the fern will be stored  *
      *  here. The (x, y) pixel is given by the x + y*bf_setup_xsize entry.    */
-    double * const data = calloc(bf_setup_number_of_pixels, sizeof(*data));
+    double * const buffer = calloc(bf_setup_number_of_pixels, sizeof(*buffer));
 
     /*  Open the file and give it write permissions.                          */
     struct bf_ppm PPM = bf_ppm_create(name);
@@ -65,15 +68,15 @@ bf_run(colorer color, const char *name)
     /*  fopen returns NULL on failure. Check for this.                        */
     if (!PPM.fp)
     {
-        /*  If calloc succeeded, we need to free the data before exiting.     */
-        if (data)
-            free(data);
+        /*  If calloc succeeded, we need to free the buffer before exiting.   */
+        if (buffer)
+            free(buffer);
 
         return;
     }
 
     /*  calloc returns NULL on failure. Check for this.                       */
-    if (!data)
+    if (!buffer)
     {
         puts("calloc failed and returned NULL. Aborting.");
 
@@ -85,8 +88,8 @@ bf_run(colorer color, const char *name)
     /*  Initialize the PPM file with default values for the preamble.         */
     bf_ppm_init(&PPM);
 
-    /*  Create the Barnsley fern and store the values in the data buffer.     */
-    bf_create_fern(data);
+    /*  Create the Barnsley fern and store the values in the buffer.          */
+    bf_create_fern(buffer, fern);
 
     /*  Loop over the y pixels and create the PPM file.                       */
     for (y = 0U; y < bf_setup_ysize; ++y)
@@ -95,7 +98,7 @@ bf_run(colorer color, const char *name)
         for (x = 0U; x < bf_setup_xsize; ++x)
         {
             /*  Compute the color the pixel is going to be.                   */
-            const double val = 1.0 - scale_factor*data[x + y*bf_setup_xsize];
+            const double val = 1.0 - scale_factor*buffer[x + y*bf_setup_xsize];
             const struct bf_color c = color(val);
 
             /*  Add this color to the PPM file.                               */
@@ -105,8 +108,8 @@ bf_run(colorer color, const char *name)
     }
     /*  End of y for-loop.                                                    */
 
-    /*  Free the memory allocated for the data.                               */
-    free(data);
+    /*  Free the memory allocated for the buffer.                             */
+    free(buffer);
 
     /*  Close the file and return.                                            */
     bf_ppm_close(&PPM);

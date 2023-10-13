@@ -16,19 +16,63 @@
  *  You should have received a copy of the GNU General Public License         *
  *  along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.   *
  ******************************************************************************
- *  Creates a Barnley fern.                                                   *
- ******************************************************************************
- *  Author: Ryan Maguire                                                      *
- *  Date:   2022/01/16                                                        *
+ *  Purpose:                                                                  *
+ *      Provides a 2D vector struct.                                          *
  ******************************************************************************/
 
-/*  All required tools are provided here.                                     */
-#include "bf/bf.h"
+/*  Include guard to prevent including this file twice.                       */
+#ifndef BF_VEC2_H
+#define BF_VEC2_H
 
-/*  Function for drawing the Barnsley Fern.                                   */
-int main(void)
+#include "bf_inline.h"
+
+/*  Simple struct for a 2D vector.                                            */
+struct bf_vec2 {
+
+    /*  A vector is defined by its Cartesian coordinates.                     */
+    double x, y;
+};
+
+BF_INLINE struct bf_vec2
+bf_vec2_rect(double x, double y)
 {
-    bf_run(bf_colorer_grayscale, &bf_default_data, "barnsley_fern.ppm");
-    return 0;
+    struct bf_vec2 P;
+    P.x = x;
+    P.y = y;
+    return P;
 }
-/*  End of main.                                                              */
+
+BF_INLINE struct bf_vec2
+bf_vec2_add(const struct bf_vec2 *P, const struct bf_vec2 *Q)
+{
+    struct bf_vec2 sum;
+    sum.x = P->x + Q->x;
+    sum.y = P->y + Q->y;
+    return sum;
+}
+
+BF_INLINE void
+bf_vec2_addto(struct bf_vec2 *P, const struct bf_vec2 *Q)
+{
+    P->x += Q->x;
+    P->y += Q->y;
+}
+
+BF_INLINE struct bf_vec2
+bf_vec2_scale(double a, const struct bf_vec2 *P)
+{
+    struct bf_vec2 prod;
+    prod.x = a * P->x;
+    prod.y = a * P->y;
+    return prod;
+}
+
+BF_INLINE void
+bf_vec2_scaleby(double a, struct bf_vec2 *P)
+{
+    P->x *= a;
+    P->y *= a;
+}
+
+#endif
+/*  End of include guard.                                                     */

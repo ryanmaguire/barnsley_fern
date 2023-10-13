@@ -30,15 +30,21 @@
 /*  rand() function is provided here.                                         */
 #include <stdlib.h>
 
+/*  Data structure with the affine transformations given here.                */
+#include "bf_data.h"
+
 /*  BF_INLINE macro is defined here.                                          */
 #include "bf_inline.h"
 
 /*  Parameters for the output PPM, such as number of pixels, given here.      */
 #include "bf_setup.h"
 
+/*  2D vector struct with basic vector arithmetic.                            */
+#include "bf_vec2.h"
+
 /*  Computes the values for the Barnsley fern and stores them in the buffer.  */
 BF_INLINE void
-bf_create_fern(double *data)
+bf_create_fern(double *buffer, const struct bf_data *fern)
 {
     /*  Scale factor to convert random numbers to fall between 0 and 100.     */
     const double scale_factor = 100.0 / (double)RAND_MAX;
@@ -47,8 +53,7 @@ bf_create_fern(double *data)
     unsigned int n, index;
 
     /*  The variables for the fern itself.                                    */
-    double x_val = bf_setup_xstart;
-    double y_val = bf_setup_ystart;
+    struct bf_vec2 P = bf_vec2_rect(bf_setup_xstart, bf_setup_ystart);
 
     /*  Loop over and create the fern.                                        */
     for (n = 0U; n < bf_setup_total; ++n)
@@ -59,35 +64,22 @@ bf_create_fern(double *data)
         /*  Scale this to a random number between 0 and 100.                  */
         const double random_value = (double)random_int * scale_factor;
 
-        /*  Initialize the old variables. Copy the current ones in to them.   */
-        const double x_old = x_val;
-        const double y_old = y_val;
-
         /*  Use the affine transformations defined by Barnsley to update.     */
-        if (random_value < 1.0)
-        {
-            x_val = 0.0;
-            y_val = 0.16*y_old;
-        }
-        else if (random_value < 86.0)
-        {
-            x_val = bf_setup_growth_factor*x_old + 0.04*y_old;
-            y_val = -0.04*x_old + 0.85*y_val + 1.6;
-        }
-        else if (random_value < 93.0)
-        {
-            x_val = 0.20*x_old - 0.26*y_old;
-            y_val = 0.23*x_old + 0.22*y_old + 1.6;
-        }
+        if (random_value < fern->cutoff[0])
+            bf_affine2_transformby(&fern->transform[0], &P);
+
+        else if (random_value < fern->cutoff[1])
+            bf_affine2_transformby(&fern->transform[1], &P);
+
+        else if (random_value < fern->cutoff[2])
+            bf_affine2_transformby(&fern->transform[2], &P);
+
         else
-        {
-            x_val = -0.15*x_old + 0.28*y_old;
-            y_val = 0.26*x_old + 0.24*y_old + 0.44;
-        }
+            bf_affine2_transformby(&fern->transform[3], &P);
 
         /*  Get the pixel x_val and y_val correspond to.                      */
-        index = bf_point_to_pixel(x_val, y_val);
-        data[index] += 1.0;
+        index = bf_point_to_pixel(P.x, P.y);
+        buffer[index] += 1.0;
     }
     /*  End of for-loop over n.                                               */
 }
