@@ -42,6 +42,21 @@ struct bf_affine2 {
     struct bf_vec2 shift;
 };
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      bf_affine2_create                                                     *
+ *  Purpose:                                                                  *
+ *      Creates an affine transformation from a linear transformation and a   *
+ *      shift, given by a matrix and a vector, respectively.                  *
+ *  Arguments:                                                                *
+ *      A (const struct bf_mat2x2 *):                                         *
+ *          A pointer to a matrix, the linear transformation part.            *
+ *      P (const struct bf_vec2 *):                                           *
+ *          A pointer to a vector, the shift component.                       *
+ *  Output:                                                                   *
+ *      T (struct bf_affine2):                                                *
+ *          The affine transformation T(v) = A(v) + P.                        *
+ ******************************************************************************/
 BF_INLINE struct bf_affine2
 bf_affine2_create(const struct bf_mat2x2 *A, const struct bf_vec2 *P)
 {
@@ -51,6 +66,20 @@ bf_affine2_create(const struct bf_mat2x2 *A, const struct bf_vec2 *P)
     return T;
 }
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      bf_affine2_transform                                                  *
+ *  Purpose:                                                                  *
+ *      Applies an affine transformation to a vector.                         *
+ *  Arguments:                                                                *
+ *      T (const struct bf_affine2 *):                                        *
+ *          A pointer to an affine transformation.                            *
+ *      P (const struct bf_vec2 *):                                           *
+ *          A pointer to a vector, the input for the transformation.          *
+ *  Output:                                                                   *
+ *      Q (struct bf_vec2 ):                                                  *
+ *          The application of the affine transformation T to P, Q = T(P).    *
+ ******************************************************************************/
 BF_INLINE struct bf_vec2
 bf_affine2_transform(const struct bf_affine2 *T, const struct bf_vec2 *P)
 {
@@ -59,6 +88,19 @@ bf_affine2_transform(const struct bf_affine2 *T, const struct bf_vec2 *P)
     return out;
 }
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      bf_affine2_transformby                                                *
+ *  Purpose:                                                                  *
+ *      Applies an affine transformation to a vector "in-place".              *
+ *  Arguments:                                                                *
+ *      T (const struct bf_affine2 *):                                        *
+ *          A pointer to an affine transformation.                            *
+ *      P (struct bf_vec2 *):                                                 *
+ *          A pointer to a vector, the input for the transformation.          *
+ *  Output:                                                                   *
+ *      None (void).                                                          *
+ ******************************************************************************/
 BF_INLINE void
 bf_affine2_transformby(const struct bf_affine2 *T, struct bf_vec2 *P)
 {

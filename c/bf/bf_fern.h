@@ -78,7 +78,7 @@ bf_create_fern(double *buffer, const struct bf_data *fern)
             bf_affine2_transformby(&fern->transform[3], &P);
 
         /*  Get the pixel x_val and y_val correspond to.                      */
-        index = bf_point_to_pixel(P.x, P.y);
+        index = bf_point_to_pixel(&P);
         buffer[index] += 1.0;
     }
     /*  End of for-loop over n.                                               */

@@ -30,6 +30,9 @@
 /*  BF_INLINE macro found here.                                               */
 #include "bf_inline.h"
 
+/*  2D vector struct found here. Used in the "point-to-pixel" function.       */
+#include "bf_vec2.h"
+
 /*  Macros for some parameters to avoid compile-time warnings.                */
 #define BF_SETUP_MAX_ITERS (64U)
 #define BF_SETUP_XSIZE (1024U)
@@ -39,7 +42,7 @@
 
 /*  Starting parameters for the x and y values in the plane.                  */
 static const double bf_setup_xstart = 0.0;
-static const double bf_setup_ystart = 1.0;
+static const double bf_setup_ystart = 0.0;
 
 /*  Number of iterations allowed in the main Barnsley fern function.          */
 static const unsigned int bf_setup_max_iters = BF_SETUP_MAX_ITERS;
@@ -61,7 +64,7 @@ static const double bf_setup_growth_factor = 0.8;
 static const double bf_setup_xscale = +0.195 * (double)BF_SETUP_XSIZE;
 static const double bf_setup_yscale = -0.090 * (double)BF_SETUP_YSIZE;
 static const double bf_setup_xshift = +0.450 * (double)BF_SETUP_XSIZE;
-static const double bf_setup_yshift = +1.000 * (double)BF_SETUP_YSIZE;
+static const double bf_setup_yshift = +0.940 * (double)BF_SETUP_YSIZE;
 
 /*  Undefine macros just to clean things up a bit.                            */
 #undef BF_SETUP_MAX_ITERS
@@ -76,23 +79,27 @@ static const double bf_setup_yshift = +1.000 * (double)BF_SETUP_YSIZE;
  *  Purpose:                                                                  *
  *      Converts a point in the plane to the corresponding pixel.             *
  *  Arguments:                                                                *
- *      xpt (double):                                                         *
- *          The x-coordinate of the input point.                              *
- *      ypt (double):                                                         *
- *          The y-coordinate of the input point.                              *
+ *      P (const struct bf_vec2 *P):                                          *
+ *          A point in the plane, P = (x, y).                                 *
  *  Outputs:                                                                  *
  *      ind (unsigned int):                                                   *
  *          The integer x + y*width where x and y are the pixels              *
  *          corresponding to (xpt, ypt), where width is the width of the PPM. *
  ******************************************************************************/
 BF_INLINE unsigned int
-bf_point_to_pixel(double xpt, double ypt)
+bf_point_to_pixel(const struct bf_vec2 *P)
 {
-    const double xpx = bf_setup_xshift + bf_setup_xscale*xpt;
-    const double ypx = bf_setup_yshift + bf_setup_yscale*ypt;
+    const double xpx = bf_setup_xshift + bf_setup_xscale*P->x;
+    const double ypx = bf_setup_yshift + bf_setup_yscale*P->y;
     const unsigned int xn = (unsigned int)xpx;
     const unsigned int yn = (unsigned int)ypx;
-    return xn + yn*bf_setup_xsize;
+    const unsigned int index = xn + yn*bf_setup_xsize;
+
+    /*  If this point goes beyond the bounds the drawing, return 0.           */
+    if (index >= bf_setup_number_of_pixels)
+        return 0U;
+
+    return index;
 }
 /*  End of bf_point_to_pixel.                                                 */
 

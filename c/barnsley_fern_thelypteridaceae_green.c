@@ -16,10 +16,10 @@
  *  You should have received a copy of the GNU General Public License         *
  *  along with barnsley_fern.  If not, see <https://www.gnu.org/licenses/>.   *
  ******************************************************************************
- *  Creates a Barnley fern.                                                   *
+ *  Creates a green thelypteridaceae fern.                                    *
  ******************************************************************************
  *  Author: Ryan Maguire                                                      *
- *  Date:   2022/01/16                                                        *
+ *  Date:   2023/10/13                                                        *
  ******************************************************************************/
 
 /*  All required tools are provided here.                                     */
@@ -28,7 +28,8 @@
 /*  Function for drawing the Barnsley Fern.                                   */
 int main(void)
 {
-    bf_run(bf_colorer_greenscale, &bf_default_data, "barnsley_fern_green.ppm");
+    const char *name = "barnsley_fern_thelypteridaceae_green.ppm";
+    bf_run(bf_colorer_greenscale, &bf_thelypteridaceae_data, name);
     return 0;
 }
 /*  End of main.                                                              */

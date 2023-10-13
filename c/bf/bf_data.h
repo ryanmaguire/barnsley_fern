@@ -56,5 +56,20 @@ static const struct bf_data bf_default_data = {
     }
 };
 
+/*  Mutated variant for the Thelypteridaceae fern.                            */
+static const struct bf_data bf_thelypteridaceae_data = {
+
+    /*  The cut-off parameters.                                               */
+    {2.0, 86.0, 93.0},
+
+    /*  The four affine transformations for the sub-intervals.                */
+    {
+        {{{{+0.000, +0.000}, {+0.000, +0.250}}}, {+0.000, -0.400}},
+        {{{{+0.950, +0.002}, {-0.005, +0.930}}}, {-0.002, +0.700}},
+        {{{{+0.035, -0.200}, {+0.160, +0.040}}}, {-0.090, +0.020}},
+        {{{{-0.040, +0.200}, {+0.160, +0.040}}}, {+0.083, +0.120}}
+    }
+};
+
 #endif
 /*  End of include guard.                                                     */
